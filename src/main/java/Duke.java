@@ -1,3 +1,7 @@
+import java.util.Scanner;
+import java.util.Arrays;
+
+
 public class Duke {
     public static void main(String[] args) {
         //Generated via https://patorjk.com/
@@ -10,8 +14,23 @@ public class Duke {
         String greeting = "Hello! I'm NotABot \n" +
                         "What can I do for you?";
         String ending = "Bye. Hope to see you again soon";
-                System.out.println("Hello from\n" + logo);
-                System.out.println(greeting);
-                System.out.println(ending);
+        String userInput;
+
+        Scanner scGreeting = new Scanner(System.in);
+
+        System.out.println("Hello from\n" + logo);
+        System.out.println(greeting);
+
+
+        while(true)
+        {
+            userInput = scGreeting.nextLine();
+            if(userInput.equalsIgnoreCase("exit"))
+            {
+                System.exit(0);
+            }
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~\n" + userInput);
+        }
+
     }
 }
