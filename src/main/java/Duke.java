@@ -3,6 +3,9 @@ import java.util.Scanner;
 import java.util.Arrays;
 
 
+
+
+
 public class Duke {
 
     public static void main(String[] args) {
@@ -35,23 +38,30 @@ public class Duke {
         while(true)
         {
             userInput = scGreeting.nextLine();
-            //checks for unmark and mark first
+            //splits into and descriptions when user input
             if(userInput.length() > 2)
             {
-                String[] temp = userInput.split(" ");
-                if((temp[0].equalsIgnoreCase("mark") || temp[0].equalsIgnoreCase("unmark")))
-                {
-                    userInput = temp[0];
-                    taskNo = temp[1];
+                String[] temp = userInput.split(" ",2);
+                switch (temp[0].toLowerCase()){
+                    case "mark":
+                    case "unmark":
+                    case "todo":
+                    case "deadline":
+                    case "event":
+                        userInput = temp[0];
+                        taskNo = temp[1];
+                        break;
+                    default:
+                        break;
                 }
             }
-
-            if(userInput.equalsIgnoreCase("bye"))
+            ///ends here
+            if(userInput.equals("bye"))
             {
                 System.out.println(ending);
                 System.exit(0);
             }
-            else if(userInput.equalsIgnoreCase("list"))
+            else if(userInput.equals("list"))
             {
                 System.out.println("Here are the tasks in your list:");
                 for (int i = 0; i < arrayInput.length; i++) {
@@ -59,32 +69,65 @@ public class Duke {
                     {
                         break;
                     }
-
-                    System.out.printf("%d. [%s] %s%n", i + 1, arrayInput[i].getStatusIcon(),
-                            arrayInput[i].description);
-
+                    System.out.printf("%d. %s%n", i + 1, arrayInput[i].toString());
                 }
             }
-            else if((userInput.equalsIgnoreCase("mark")) || userInput.equalsIgnoreCase(("unmark")))
+            else if((userInput.equals("mark")) || userInput.equals(("unmark")))
             {
                 int number = Integer.parseInt(taskNo);
-                if(userInput.equalsIgnoreCase("mark"))
+                if(userInput.equals("mark"))
                 {
                     arrayInput[number -1].markAsDone();
                     System.out.println("Nice! I've marked this task as done:");
                 }
-                else if(userInput.equalsIgnoreCase("unmark"))
+                else if(userInput.equals("unmark"))
                 {
                     arrayInput[number -1].markAsNotDone();
                     System.out.println("OK, I've marked this task as not done yet:");
                 }
-
-                System.out.printf("[%s] %s%n", arrayInput[number-1].getStatusIcon(),
-                        arrayInput[number-1].description);
+                System.out.println(arrayInput[number-1].toString());
             }
-            //Example
-            //Task t = new Task(userInput);
-            //t.markAsDone();
+            else if (userInput.equals("todo"))
+            {
+                System.out.println("Got it. I've added this task: " );
+                arrayInput[arrayIndex] = new ToDo (taskNo);
+                System.out.println(arrayInput[arrayIndex]);
+                arrayIndex++;
+                System.out.println("Now you have " + arrayIndex + " tasks in the list");
+            }
+            else if (userInput.equals("deadline"))
+            {
+                String [] splitBy = taskNo.split(" /by " , 2);
+                System.out.println("Got it. I've added this task: " );
+                arrayInput[arrayIndex] = new Deadline(splitBy[0],splitBy[1]);
+                System.out.println(arrayInput[arrayIndex]);
+                arrayIndex++;
+                System.out.println("Now you have " + arrayIndex + " tasks in the list");
+
+            }
+            else if(userInput.equals("event"))
+            {
+                String start;
+                String end;
+                System.out.println("Got it. I've added this task: " );
+                //description of event split from date/time
+                String [] splitEvent = taskNo.split(" /from " , 2);
+                //checks if there is start&end date/time
+                String [] splitStartEnd = splitEvent[1].split(" /to ", 2);
+                if(splitStartEnd.length > 1){
+                    start = splitStartEnd[0];
+                    end = splitStartEnd[1];
+                }
+                else
+                {
+                    start = splitStartEnd[0];
+                    end = " ";
+                }
+                arrayInput[arrayIndex] = new Event (splitEvent[0],start,end);
+                System.out.println(arrayInput[arrayIndex]);
+                arrayIndex++;
+                System.out.println("Now you have " + arrayIndex + " tasks in the list");
+            }
             else {
                 arrayInput[arrayIndex] = new Task(userInput);
                 arrayIndex++;
@@ -97,3 +140,4 @@ public class Duke {
 
     }
 }
+
