@@ -1,4 +1,11 @@
+import jdk.jshell.spi.ExecutionControl;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Arrays;
 
@@ -8,16 +15,44 @@ import java.util.Arrays;
 
 public class Duke {
 
+    private Storage storage;
+    private TaskList tasks;
+    private Ui ui;
+
+    public Duke(String filePath){
+
+        ui = new Ui();
+        storage = new Storage(filePath);
+        tasks = new TaskList(storage.load());
+    }
+
+    public void run() {
+        ui.welcome();
+        ArrayList <Task> arrayInput = new ArrayList<Task>();
+        boolean isExit = false;
+        while (!isExit) {
+            try {
+                String fullCommand = ui.readInput();
+                ui.showLine(); // show the divider line ("_______")
+                //Command c = Parser.parse(fullCommand);
+                //c.execute(tasks, ui, storage);
+                //isExit = c.isExit();
+                arrayInput.add(new Task(fullCommand));
+                storage.save(arrayInput);
+                isExit = true;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
     public static void main(String[] args) {
         //Generated via https://patorjk.com/
-        String logo =  "_______          __     _____ __________        __\n" +
-                "\\      \\   _____/  |_  /  _  \\______   \\ _____/  |_ \n" +
-                "/   |   \\ /  _ \\   __\\/  /_\\  \\|    |  _//  _ \\   __\\ \n" +
-                "/    |    (  <_> )  | /    |    \\   |   (  <_> )  |  \n" +
-                "\\____|__  /\\____/|__| \\____|__  /______  /\\____/|__|  \n";
 
-        String greeting = "Hello! I'm NotABot \n" +
-                        "What can I do for you?";
+
+        new Duke("./data/tasks.txt").run();
+
+    }
+        /*
         String ending = "Bye. Hope to see you again soon";
         String userInput;
         String taskNo = null;
@@ -32,112 +67,18 @@ public class Duke {
 
         Scanner scGreeting = new Scanner(System.in);
 
-        System.out.println("Hello from\n" + logo);
-        System.out.println(greeting);
 
 
 
 
-        while(true)
+
+
         {
-            userInput = scGreeting.nextLine();
-            //splits into and descriptions when user input
-            validInput = true;
-            if(userInput.length() > 2)
-            {
-                String[] temp = userInput.split(" ",2);
-                try
-                {
-                    if(userInput.startsWith(" "))
-                    // checks for space starting and input must be at least 3
-                    {
-                        validWord = false;
-                        throw new DukeException("Invalid input");
-                    }
-                }
-                catch (DukeException e){
-                    System.err.println("Invalid input , No starting with space");
-                    validInput =false;
-                }
 
-                switch (temp[0].toLowerCase()){
-                    case "mark":// need check if valid task no
-                        userInput= temp[0];
-                        taskNo = temp[1];
-                        break;
-                    case "unmark": // need check if valid task no
-                        userInput= temp[0];
-                        taskNo = temp[1];
-                        break;
-                    case "todo":
-                        if (temp.length == 1) {
-                            try{
-                                throw new DukeException("Todo Description is empty.Please fix");
-                            }catch (DukeException e){
-                                validInput =false;
-                                System.err.println(e.getMessage());
-                            }
-                        }
-                        else
-                        {
-                            userInput= temp[0];
-                            taskNo = temp[1];
-                        }
-                        break;
-                    case "deadline": // check for valid date
-                        // deadline return book /by Sunday syntax
-                        userInput= temp[0];
-                        taskNo = temp[1];
-                        break;
-                    case "event": // check for valid time/date
-                        // event project meeting /from Mon 2pm /to 4pm  syntax
-                        userInput = temp[0];
-                        if(temp.length > 1)
-                        {
-                            taskNo = temp[1];
-                        }
-                        else
-                        {
-                            try{
-                                throw new DukeException("Event Description is empty.Please fix");
-                            } catch (DukeException e) {
-                                validInput =false;
-                                System.err.println(e.getMessage());
-                            }
 
-                        }
 
-                        break;
-                    case "list":
-                        break;
-                    case "delete": // need check if within list
-                        if(taskNo.isEmpty())
-                        {
-                            try{
-                                throw new DukeException("Invalid Delete");
-                            }catch (DukeException e){
-                                validInput =false ;
-                                System.err.println(e.getMessage());
-                            }
-                        }
-                        else {
-                            userInput= temp[0];
-                            taskNo = temp[1];
-                        }
-
-                        break;
-                    default:
-                        try{
-                            throw new DukeException("Not part of my commands.Please input a valid one");
-                        }catch (DukeException e){
-                            validInput =false;
-                            System.err.println(e.getMessage());
-                        }
-                        break;
-                }
-            }
             ///ends here
-            while(validInput){
+           /* while(validInput){
                 validInput =false;
                 System.out.println(userInput);
                 if(userInput.equals("bye"))
@@ -237,4 +178,6 @@ public class Duke {
 
     }
 }
+}*/
+    }
 
