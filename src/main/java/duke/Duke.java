@@ -1,16 +1,6 @@
-import jdk.jshell.spi.ExecutionControl;
+package duke;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Arrays;
-
-
-
 
 
 public class Duke {
@@ -23,27 +13,50 @@ public class Duke {
 
         ui = new Ui();
         storage = new Storage(filePath);
-        tasks = new TaskList(storage.load());
-    }
+        try {
+            tasks = new TaskList(storage.load());
+        } catch (Exception e) {
+            System.out.println("no task in file");
+            tasks = new TaskList(new ArrayList<>());
+        }
 
+    }
+    public ArrayList<Task> copyTasks(TaskList taskList) {
+        // This function assumes TaskList can iterate over its tasks or provide them one by one
+        ArrayList<Task> newTaskArray = new ArrayList<>();
+        //System.out.println("anything inside");
+        //System.out.println(taskList.getTask(1));
+        for (int i = 0; i < taskList.size(); i++) {
+            Task task = taskList.getTask(i); // If you add a way to get a task by index
+            if (task != null) {
+                newTaskArray.add(task);
+            }
+        }
+        return newTaskArray;
+    }
     public void run() {
         ui.welcome();
-        ArrayList <Task> arrayInput = new ArrayList<Task>();
+        ArrayList <Task> arrayInput = copyTasks(tasks);
+        //System.out.println(arrayInput.size());
+        int arrayIndex = 0;
         boolean isExit = false;
         while (!isExit) {
             try {
                 String fullCommand = ui.readInput();
                 ui.showLine(); // show the divider line ("_______")
-                //Command c = Parser.parse(fullCommand);
+                String c = Parser.mainCode(fullCommand,arrayInput,arrayIndex);
                 //c.execute(tasks, ui, storage);
                 //isExit = c.isExit();
-                arrayInput.add(new Task(fullCommand));
-                storage.save(arrayInput);
-                isExit = true;
+                //arrayInput.add(new Task(fullCommand));
+                if(fullCommand.equals("bye"))
+                {
+                    isExit = true;
+                }
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
+        storage.save(arrayInput);
     }
     public static void main(String[] args) {
         //Generated via https://patorjk.com/

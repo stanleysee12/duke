@@ -1,15 +1,19 @@
+package duke;
+
 import java.util.ArrayList;
 import java.util.List;
 
 //TaskList: contains the task list e.g., it has operations to add/delete tasks in the list
 public class TaskList {
 
-    private List<Task> tasks;
+    private ArrayList<Task> tasks;
 
     public TaskList(List<Task> loadTask) {
-        this.tasks = new ArrayList<>();
+        this.tasks = new ArrayList<>(loadTask);
     }
-
+    public ArrayList<Task> getTasks() {
+        return this.tasks;
+    }
     public void addTask (Task currentTask){
         tasks.add(currentTask);
     }
@@ -36,5 +40,8 @@ public class TaskList {
             return tasks.get(index);
         }
         return null; // Or throw an exception
+    }
+    public int size() {
+        return tasks.size();
     }
 }

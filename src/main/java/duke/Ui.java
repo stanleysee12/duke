@@ -1,3 +1,5 @@
+package duke;
+
 import java.util.Scanner;
 
 
@@ -25,6 +27,7 @@ public class Ui {
     public void showLine(){
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~\n");
     }
+
     public void showLoadingError(){
         System.out.println("No file found");
     }

@@ -1,8 +1,9 @@
+package duke;
+
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 //Storage: deals with loading tasks from the file and saving tasks in the file
 public class Storage {
@@ -21,22 +22,24 @@ public class Storage {
         }
         return test;
     }*/
-    public List<Task> load(){
+    public List<Task> load() {
+        //System.out.println("Loaded task");
         List<Task> loadTask = new ArrayList<>();
         File file = new File(path);
 
-        if(!file.exists()){
-            return loadTask;
-        }
+        if (file.exists()) {
+            try (Scanner scanner = new Scanner(file)) {
+                while (scanner.hasNextLine()) {
+                    String currentLine = scanner.nextLine();
+                    Task task = new Task(currentLine);
+                    loadTask.add(task);
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
 
-        try {
-            FileInputStream fileInputStream = new FileInputStream(path);
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
-        return loadTask;
+        }return loadTask;
     }
     public void save(List<Task> tasks){
         File file = new File(path);
