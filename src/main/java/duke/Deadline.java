@@ -23,7 +23,7 @@ public class Deadline extends Task {
 
     @Override
     public String toString() {
-        System.out.println("Printing deadline Override");
+        //System.out.println("Printing deadline Override");
         DateTimeFormatter displayFormat = DateTimeFormatter.ofPattern("MMM d yyy");
         return "[D]" + super.toString() + " (by: " + this.by.format(displayFormat) + ")";
         //return "[D]" + super.toString() + " (by: " + by + ")";

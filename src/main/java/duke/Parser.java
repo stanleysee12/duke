@@ -37,7 +37,7 @@ public class Parser {
             taskNo = temp.length > 1 ? temp[1] : null;
 
         }
-        //System.out.println(taskNo);
+        System.out.println(taskNo);
         //System.out.println(temp[0]);
         //System.out.println("Parse done");
 
@@ -130,7 +130,17 @@ public class Parser {
                 String ending = "Bye. Hope to see you again soon";
                 System.out.println(ending);
                 break;
-
+            case "priority" :
+                //only 1 and 0
+                //format priority priroitylevel/taskno
+                System.out.println("Setting Priority");
+                if(taskNo == null) throw new DukeException("invalid priority input");
+                String split[] = taskNo.split("/" , 2);
+                int priority = Integer.parseInt(split[0]);
+                int num = Integer.parseInt(split[1]) - 1 ;
+                arrayInput.get(num).setPriority(priority);
+                System.out.println(arrayInput.get(num).toString());
+                break;
             default:
                 try {
                     throw new DukeException("Not part of my commands.Please input a valid one");
