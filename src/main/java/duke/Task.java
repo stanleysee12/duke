@@ -11,6 +11,13 @@ public class Task {
         this.priority = 0 ;
     }
 
+    public void readExisting(String description, boolean isDone , int priority)
+    {
+        this.description = description;
+        this.isDone = isDone;
+        this.priority = priority ;
+    }
+
     public void setPriority(int priority) {
         this.priority = priority;
     }
@@ -34,7 +41,8 @@ public class Task {
     }
     @Override
     public String toString(){
-        return "[" + getStatusIcon() + "]" + " " + getDescription() + " P: " + getPriority();
+        return  "[" + getStatusIcon() + "]" + " P:" + getPriority() + " " + getDescription();
+        //return  " " + getDescription() + " P: " + getPriority();
     }
     //...
 }

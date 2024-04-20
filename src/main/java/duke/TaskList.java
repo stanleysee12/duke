@@ -2,8 +2,10 @@ package duke;
 
 import java.util.ArrayList;
 import java.util.List;
-
-//TaskList: contains the task list e.g., it has operations to add/delete tasks in the list
+/**
+ * The {@code TaskList} class represents a list of tasks and is able to edit the tasks
+ * @tasks - all the list
+ */
 public class TaskList {
 
     private ArrayList<Task> tasks;

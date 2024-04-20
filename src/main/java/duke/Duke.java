@@ -24,21 +24,9 @@ public class Duke {
 
     }
 
-    public ArrayList<Task> copyTasks(TaskList taskList) {
-        // This function assumes TaskList can iterate over its tasks or provide them one by one , to copy existing text inside old file to new arraylist
-        ArrayList<Task> newTaskArray = new ArrayList<>();
-        for (int i = 0; i < taskList.size(); i++) {
-            Task task = taskList.getTask(i);
-            if (task != null) {
-                newTaskArray.add(task);
-            }
-        }
-        return newTaskArray;
-    }
-
     public void run() {
         ui.welcome();
-        ArrayList<Task> arrayInput = copyTasks(tasks);
+        ArrayList<Task> arrayInput = storage.load();
         int arrayIndex = 0;
         boolean isExit = false;
         while (!isExit) {

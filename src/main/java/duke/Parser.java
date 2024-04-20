@@ -3,9 +3,9 @@ package duke;
 import java.util.ArrayList;
 
 
-/*
-Parser: deals with making sense of the user command
-Most of the code here checks input
+/**
+ * The {@code Parser} class deals with user commands , checks for input and perform the correct actions
+ * such as adding, deleting, and searching for tasks within the task list.
  */
 public class Parser {
     private TaskList task;
@@ -48,22 +48,39 @@ public class Parser {
 
 
         switch (temp[0].toLowerCase()) {
-            case "mark":// need check if valid task no
-            case "unmark": // need check if valid task no
-                System.out.println("reached");
-                int number = Integer.parseInt(taskNo) - 1;
-                if(userInput.equals("mark"))
-                {
-                    arrayInput.get(number -1).markAsDone();
+            case "mark":
+                try {
+                    assert taskNo != null : "Task is always true";
+
+                    int taskIndex = Integer.parseInt(taskNo) - 1; // Convert input to zero-based index
+                    assert taskIndex >= 0 : "Task index always positive";
+                    assert taskIndex < arrayInput.size() : "Task index always inside size";
+                    if (taskIndex < 0 || taskIndex >= arrayInput.size()) {
+                        throw new DukeException("Invalid task no.");
+                    }
+
+                    arrayInput.get(taskIndex).markAsDone(); // Mark the task as done
                     System.out.println("Nice! I've marked this task as done:");
+                    System.out.println(arrayInput.get(taskIndex).toString());
+                } catch (DukeException e) {
+                    System.err.println(e.getMessage());
                 }
-                else if(userInput.equals("unmark"))
-                {
-                    arrayInput.get(number -1).markAsNotDone();
-                    System.out.println("OK, I've marked this task as not done yet:");
-                }
-                System.out.println(arrayInput.get(number -1).toString());
                 break;
+
+            case "unmark":
+                try {
+                    int taskIndex = Integer.parseInt(taskNo) - 1; // Convert input to zero-based index
+                    if (taskIndex < 0 || taskIndex >= arrayInput.size()) {
+                        throw new DukeException("Invalid task no.");
+                    }
+                    arrayInput.get(taskIndex).markAsNotDone(); // Mark the task as not done
+                    System.out.println("OK, I've marked this task as not done yet:");
+                    System.out.println(arrayInput.get(taskIndex).toString());
+                } catch (DukeException e) {
+                    System.err.println(e.getMessage());
+                }
+                break;
+
             case "todo":
                 if(taskNo == null) throw new DukeException("Todo description is empty");
                 System.out.println("Got it. I've added this task: " );
@@ -79,7 +96,7 @@ public class Parser {
                 System.out.println("Got it. I've added this task: " );
                 //System.out.println(splitBy[0]);
                 //System.out.println(splitBy[1]);
-                arrayInput.add(new Deadline(splitBy[0],splitBy[1]));
+                arrayInput.add(new Deadline(splitBy[0],splitBy[1],false));
                 System.out.println(arrayInput.getLast());
                 System.out.println("Now you have " + arrayInput.size() + " tasks in the list");
                 break;
@@ -117,13 +134,15 @@ public class Parser {
                 //System.out.println(checkSize);
                 //System.out.println(arrayInput.size());
                 try{
-                    if(checkSize < 0 || checkSize >= arrayInput.size())
+                    assert checkSize >= 0 : "Always positive";
+                    assert checkSize < arrayInput.size() : "Always in range";
+                    if(checkSize < 0 || checkSize > arrayInput.size())
                     {
                         throw new DukeException("Invalid Deletion");
                     }
                     int tempDeleteNo = Integer.parseInt(taskNo) - 1;
                     System.out.println("Noted. Task has been removed");
-                    System.out.println(arrayInput.size());
+                    //System.out.println(arrayInput.size());
                     System.out.println(arrayInput.get(tempDeleteNo));
                     arrayInput.remove(tempDeleteNo);
                 } catch (DukeException e) {
@@ -137,10 +156,12 @@ public class Parser {
             case "priority" :
                 //only 1 and 0
                 //format priority priroitylevel/taskno
-                System.out.println("Setting Priority");
+
                 if(taskNo == null) throw new DukeException("invalid priority input");
+                System.out.println("Setting Priority");
                 String split[] = taskNo.split("/" , 2);
                 int priority = Integer.parseInt(split[0]);
+                //System.out.println(split[0]);
                 int num = Integer.parseInt(split[1]) - 1 ;
                 arrayInput.get(num).setPriority(priority);
                 System.out.println(arrayInput.get(num).toString());
@@ -158,7 +179,7 @@ public class Parser {
                     }
                 }
                 for (int i = 0; i < matched.size(); i++) {
-                    System.out.printf("Task %d: %s\n", i + 1, matched.get(i).toString());
+                    System.out.printf("%d: %s\n", i + 1, matched.get(i).toString());
                 }
                 break;
             default:
