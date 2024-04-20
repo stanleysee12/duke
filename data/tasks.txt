@@ -1,3 +1,2 @@
-[ ] 
 [D][ ] return book (by: Dec 23 2019)
 [T][ ] borrow book

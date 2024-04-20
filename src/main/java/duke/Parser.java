@@ -2,7 +2,11 @@ package duke;
 
 import java.util.ArrayList;
 
-//Parser: deals with making sense of the user command
+
+/*
+Parser: deals with making sense of the user command
+Most of the code here checks input
+ */
 public class Parser {
     private TaskList task;
     private Ui ui;
@@ -19,7 +23,7 @@ public class Parser {
         String[] temp = new String[0] ;
         String temp2 = " ";
         String taskNo = null ;
-        System.out.println(userInput.length());
+        //System.out.println(userInput.length());
         boolean validInput = true;
         if (userInput.length() > 1) {
             temp = userInput.split(" ", 2);
@@ -37,7 +41,7 @@ public class Parser {
             taskNo = temp.length > 1 ? temp[1] : null;
 
         }
-        System.out.println(taskNo);
+        //System.out.println(taskNo);
         //System.out.println(temp[0]);
         //System.out.println("Parse done");
 
@@ -141,6 +145,22 @@ public class Parser {
                 arrayInput.get(num).setPriority(priority);
                 System.out.println(arrayInput.get(num).toString());
                 break;
+            case "find":
+                //format find keyword
+                System.out.println("Matching tasks: ");
+                ArrayList <Task> matched = new ArrayList<>();
+                for(int i = 0 ; i < arrayInput.size() ; i++)
+                {
+                    Task checkTask = arrayInput.get(i);
+                    if(checkTask.getDescription().toLowerCase().contains(taskNo.toLowerCase()))
+                    {
+                        matched.add(checkTask);
+                    }
+                }
+                for (int i = 0; i < matched.size(); i++) {
+                    System.out.printf("Task %d: %s\n", i + 1, matched.get(i).toString());
+                }
+                break;
             default:
                 try {
                     throw new DukeException("Not part of my commands.Please input a valid one");
@@ -149,13 +169,6 @@ public class Parser {
                 }
                 break;
         }
-
-       /* else {
-            //arrayInput.add(new Task(userInput));
-            arrayIndex++;
-            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~\n" + "added: " + userInput);
-        } */
-
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~\n");
         return temp[0];
     }

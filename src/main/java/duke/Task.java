@@ -34,7 +34,7 @@ public class Task {
     }
     @Override
     public String toString(){
-        return "[" + getStatusIcon() + "]" + " " + getDescription() + "P: " + getPriority();
+        return "[" + getStatusIcon() + "]" + " " + getDescription() + " P: " + getPriority();
     }
     //...
 }
